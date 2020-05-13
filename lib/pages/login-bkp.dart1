@@ -1,0 +1,264 @@
+import 'package:etc/helper/globals.dart';
+import 'package:flutter/material.dart';
+
+class Login extends StatefulWidget {
+  final String activeTab;
+  Login({Key key, this.activeTab}) : super(key: key);
+
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            iconTheme: IconThemeData(color: darkGrayColor),
+            elevation: 1.0,
+            bottom: TabBar(
+                labelColor: Colors.white,
+                unselectedLabelColor: primaryColor,
+                labelPadding: EdgeInsets.symmetric(horizontal: 35),
+                indicatorSize: TabBarIndicatorSize.label,
+                indicator: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10)),
+                    color: primaryColor),
+                tabs: [
+                  Container(
+                    width: 100.0,
+                    child: Tab(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text("Login", style: TextStyle(fontSize: 16.0)),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: 100.0,
+                    child: Tab(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child:
+                            Text("Register", style: TextStyle(fontSize: 16.0)),
+                      ),
+                    ),
+                  ),
+                ]),
+          ),
+          body: TabBarView(children: [
+            // Login Tab
+            Container(
+              padding: EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Padding(
+                      padding: EdgeInsets.only(left: 15, right: 15),
+                      child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.emailAddress,
+                          autocorrect: false,
+                          onChanged: (value) {},
+                          // controller: editingController,
+                          decoration: InputDecoration(
+                              isDense: true,
+                              contentPadding: EdgeInsets.all(12),
+                              hintText: "Email",
+                              hintStyle: TextStyle(color: grayColor),
+                              fillColor: Colors.white,
+                              filled: false,
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                      color: Color(0xFFced4d9), width: 1.0)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                      color: grayColor, width: 1.5))))),
+                  SizedBox(height: 15.0),
+                  Padding(
+                      padding: EdgeInsets.only(left: 15, right: 15),
+                      child: TextFormField(
+                          textInputAction: TextInputAction.done,
+                          autocorrect: false,
+                          obscureText: true,
+                          onChanged: (value) {},
+                          // controller: editingController,
+                          decoration: InputDecoration(
+                              isDense: true,
+                              contentPadding: EdgeInsets.all(12),
+                              hintText: "Password",
+                              hintStyle: TextStyle(color: grayColor),
+                              fillColor: Colors.white,
+                              filled: false,
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                      color: Color(0xFFced4d9), width: 1.0)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                      color: grayColor, width: 1.5))))),
+                  SizedBox(height: 15.0),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                    child: RichText(
+                      textAlign: TextAlign.left,
+                      text: TextSpan(
+                          text: 'Forgot Password? ',
+                          style: TextStyle(color: Colors.black),
+                          children: [
+                            TextSpan(
+                                text: 'Reset',
+                                style: TextStyle(color: primaryColor)),
+                            TextSpan(text: " here")
+                          ]),
+                    ),
+                  ),
+                  SizedBox(height: 25.0),
+                  Container(
+                    margin: EdgeInsets.only(left:90.0, right:90.0),
+                    child: RaisedButton(
+                        onPressed: () {},
+                        color: primaryColor,
+                        padding: EdgeInsets.only(left: 35.0, right: 35.0),
+                        child: Text("Login",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 16.0))),
+                  ),
+                  SizedBox(height: 15.0),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                          text: 'Don\'t have an Account? ',
+                          style: TextStyle(color: Colors.black),
+                          children: [
+                            TextSpan(
+                                text: 'Register',
+                                style: TextStyle(color: primaryColor)),
+                            TextSpan(text: " now")
+                          ]),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            //  ===== Registration Tab =======
+            Container(
+              padding: EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Padding(
+                      padding: EdgeInsets.only(left: 15, right: 15),
+                      child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.emailAddress,
+                          autocorrect: false,
+                          onChanged: (value) {},
+                          // controller: editingController,
+                          decoration: InputDecoration(
+                              isDense: true,
+                              contentPadding: EdgeInsets.all(12),
+                              hintText: "Email",
+                              hintStyle: TextStyle(color: grayColor),
+                              fillColor: Colors.white,
+                              filled: false,
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                      color: Color(0xFFced4d9), width: 1.0)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                      color: grayColor, width: 1.5))))),
+                  SizedBox(height: 15.0),
+                  Padding(
+                      padding: EdgeInsets.only(left: 15, right: 15),
+                      child: TextFormField(
+                          textInputAction: TextInputAction.done,
+                          autocorrect: false,
+                          obscureText: true,
+                          onChanged: (value) {},
+                          // controller: editingController,
+                          decoration: InputDecoration(
+                              isDense: true,
+                              contentPadding: EdgeInsets.all(12),
+                              hintText: "Password",
+                              hintStyle: TextStyle(color: grayColor),
+                              fillColor: Colors.white,
+                              filled: false,
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                      color: Color(0xFFced4d9), width: 1.0)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                      color: grayColor, width: 1.5))))),
+                  SizedBox(height: 15.0),
+                  Padding(
+                      padding: EdgeInsets.only(left: 15, right: 15),
+                      child: TextFormField(
+                          textInputAction: TextInputAction.done,
+                          autocorrect: false,
+                          obscureText: true,
+                          onChanged: (value) {},
+                          // controller: editingController,
+                          decoration: InputDecoration(
+                              isDense: true,
+                              contentPadding: EdgeInsets.all(12),
+                              hintText: "Confirm Password",
+                              hintStyle: TextStyle(color: grayColor),
+                              fillColor: Colors.white,
+                              filled: false,
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                      color: Color(0xFFced4d9), width: 1.0)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                      color: grayColor, width: 1.5))))),
+                  SizedBox(height: 25.0),
+                  Container(
+                    margin: EdgeInsets.only(left:90.0, right:90.0),
+                    child: RaisedButton(
+                        onPressed: () {},
+                        color: primaryColor,
+                        padding: EdgeInsets.only(left: 35.0, right: 35.0),
+                        child: Text("Register",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 16.0))),
+                  ),
+                  SizedBox(height: 15.0),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                          text: 'Already have an Account? ',
+                          style: TextStyle(color: Colors.black),
+                          children: [
+                            TextSpan(
+                                text: 'Login',
+                                style: TextStyle(color: primaryColor)),
+                            TextSpan(text: " now")
+                          ]),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ]),
+        ));
+  }
+}

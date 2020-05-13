@@ -1,0 +1,1 @@
+enum AppTab { events, list_offer, map_offer,home,favourites,notifications,profile}
