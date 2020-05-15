@@ -8,8 +8,8 @@ class BrandItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(3.0),
-      width: 92.0,
+      margin: EdgeInsets.only(left:5.0,right:5.0),
+      width: MediaQuery.of(context).size.width*0.20,
       decoration: BoxDecoration(border: Border.all(color: lightGrayColor)),
       child: Image.network(brandItem["brandLogoURL"]),
     );

@@ -46,3 +46,4 @@ const privacyURL = "https://voucherskout.s3.eu-central-1.amazonaws.com/images/pr
 
 dynamic currentFilterParams = {};
 dynamic currentUserProfile = {};
+String voucherCountRef = "1-V";

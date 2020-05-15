@@ -384,6 +384,52 @@ class Services {
     final response = await ApiBaseHelper().api(method:"GET",url:url,body:null, headers:headers);
     return response;
   }
+
+  // validate outlet pin
+  Future<dynamic> validateOutletPin({dynamic data}) async {
+    /*authorization: 
+      requestParams:{
+        dealID,outletPIN,redeemVoucherCountRef
+      }
+    */
+
+    final url = authWeb + apiV1 + 'validateOutletPIN';
+    
+    Map<String, String> headers = {};
+    if (data != '' && data != null) {
+      headers['requestParams'] = DataProcess().encode("base64", data);
+    }
+    headers['tokenRequiresRefresh']="true";
+    try{
+      final response = await ApiBaseHelper().api(method:"GET",url:url,body:null, headers:headers);
+      return response;
+    }catch(e){
+      throw e;
+    }
+  }
+  
+  // redeem voucher
+  Future<dynamic> redeemVoucher({dynamic data}) async {
+    /*authorization: 
+      requestParams:{
+        dealID,redeemVoucherCountRef,outletPIN,password
+      }
+    */
+
+    final url = authWeb + apiV1 + 'redeemVoucher';
+    
+    Map<String, String> headers = {};
+    if (data != '' && data != null) {
+      headers['requestParams'] = DataProcess().encode("base64", data);
+    }
+    headers['tokenRequiresRefresh']="true";
+    try{
+      final response = await ApiBaseHelper().api(method:"POST",url:url,body:null, headers:headers);
+      return response;
+    }catch(e){
+      throw e;
+    }
+  }
   
   // validate user
   Future<List<dynamic>> validateUser({dynamic data}) async {

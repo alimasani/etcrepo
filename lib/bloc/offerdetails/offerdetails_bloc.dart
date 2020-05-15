@@ -34,9 +34,13 @@ class OfferdetailsBloc extends Bloc<OfferdetailsEvent, OfferdetailsState> {
         print("XXXXXXX");
         print(event.userProfile);
         print("XXXXXXX");
-
-        reqParams['userName']=event.userProfile['userProfile']['userName'];
-        reqParams['userID']=event.userProfile['user']['userID'];
+        if(event.userProfile!=null && event.userProfile!=''){
+          if(event.userProfile.length>0){
+            reqParams['userName']=event.userProfile['userProfile']['userName'];
+            reqParams['userID']=event.userProfile['user']['userID'];
+          }
+        }
+        
 
         var offersList = await _services.getOfferDetails(reqParams);
 

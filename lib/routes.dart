@@ -3,7 +3,9 @@ import 'package:etc/helper/globals.dart';
 import 'package:etc/helper/services.dart';
 import 'package:etc/pages/home.dart';
 import 'package:etc/pages/login.dart';
+import 'package:etc/pages/merchantpin.dart';
 import 'package:etc/pages/offers.dart';
+import 'package:etc/pages/vouchercode.dart';
 import 'package:etc/pages/welcome.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,4 +28,7 @@ final Map<String, WidgetBuilder> routes = <String, WidgetBuilder>{
     ],
     child: Home()),
   "/Offers": (BuildContext context) => Offers(),
+  "/merchantPin": (BuildContext context) => MerchantPin(),
+  "/voucherCode": (BuildContext context) => VoucherCode(),
+
 };

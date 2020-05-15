@@ -6,6 +6,7 @@ import 'package:etc/simple_bloc_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:etc/theme/theme.dart';
 import 'package:etc/routes.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:etc/helper/globals.dart';
 
@@ -34,6 +35,10 @@ void main() {
 class EtcApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+      ]);
 
     return BlocBuilder<AuthenticateBloc,AuthenticateState>(builder: (context,state){
       return MaterialApp(

@@ -32,17 +32,23 @@ class IDCard extends StatelessWidget {
                   ),
                   SizedBox(height: 10.0),
                   Container(
-                      width: 170.0,
-                      height: 160.0,
+                      width: 150.0,
+                      height: 140.0,
                       child: Image.network(
                         profile['userProfile']['linkReferences'][0]['link'],
-                        width: 170.0,
-                        height: 160.0,
+                        width: 130.0,
+                        height: 120.0,
                         fit: BoxFit.cover,
                       )),
                   SizedBox(height: 5.0),
                   Text(
                     profile['userProfile']['primaryEmail'],
+                    style: offerInfoWhite,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 5.0),
+                  Text(
+                    profile['userProfile']['primaryMobile'],
                     style: offerInfoWhite,
                     textAlign: TextAlign.center,
                   )
@@ -78,7 +84,7 @@ class IDCard extends StatelessWidget {
                     height: 10.0,
                   ),
                   QrImage(
-                    data: profile['user']['membershipID'],
+                    data: profile['user']['membershipID']+":"+profile['user']['memberSince']+":"+profile['userProfile']['firstName'] +' ' +profile['userProfile']['lastName']+":"+profile['userProfile']['primaryEmail']+":"+profile['userProfile']['primaryMobile']+":"+profile['userProfile']['linkReferences'][0]['link'],
                     version: QrVersions.auto,
                     size: 100.0,
                     backgroundColor: Colors.white,
@@ -90,8 +96,11 @@ class IDCard extends StatelessWidget {
       ),
       height: 230.0,
       decoration: BoxDecoration(
+        border:Border.all(color: Colors.white60),
         borderRadius: BorderRadius.circular(15.0),
         color: blueColor,
+        image: DecorationImage(
+                image: AssetImage("assets/img/card-bg.jpg"), fit: BoxFit.cover)
       ),
     );
   }

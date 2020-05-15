@@ -26,7 +26,7 @@ class _OffersState extends State<Offers> {
 
     currentFilterParams.remove("viewUserBookmarkedOffers");
 
-    if(currentUserProfile!=null && currentUserProfile!=''){
+    if(currentUserProfile!=null && currentUserProfile!='' && currentUserProfile.length>0){
       currentFilterParams['userID'] = currentUserProfile['user']['userID'];
       currentFilterParams['userName'] = currentUserProfile['userProfile']['userName'];
     }
@@ -55,7 +55,7 @@ class _OffersState extends State<Offers> {
                                     builder: (_) => BlocProvider(
                                       create: (context) =>
                                           OfferdetailsBloc(Services()),
-                                      child: OfferDetails(oItem: offerList[index]),
+                                      child: OfferDetails(offerId: offerList[index]['offerInfo']['offerID'],outletId: offerList[index]['outlet']['outletID'],outletName: offerList[index]['outlet']['outletName']),
                                     ),
                                     //(_)=>OfferDetails(oItem: itm,)
                                   ));

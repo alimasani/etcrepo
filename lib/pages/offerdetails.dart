@@ -16,8 +16,10 @@ import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OfferDetails extends StatefulWidget {
-  final dynamic oItem;
-  OfferDetails({Key key, this.oItem}) : super(key: key);
+  final String offerId;
+  final String outletId;
+  final String outletName;
+  OfferDetails({Key key, this.offerId, this.outletId, this.outletName}) : super(key: key);
 
   @override
   _OfferDetailsState createState() => _OfferDetailsState();
@@ -26,6 +28,7 @@ class OfferDetails extends StatefulWidget {
 class _OfferDetailsState extends State<OfferDetails> {
 
   var isBookmarked = "false";
+  var bookmarkUpdated = "false";
 
   @override
   void initState() {
@@ -43,8 +46,8 @@ class _OfferDetailsState extends State<OfferDetails> {
     super.didChangeDependencies();
     BlocProvider.of<OfferdetailsBloc>(context)
       ..add(GetOfferDetails(
-          outletId: widget.oItem['outlet']['outletID'],
-          offerId: widget.oItem['offerInfo']['offerID'], userProfile:currentUserProfile));
+          outletId: widget.outletId,
+          offerId: widget.offerId, userProfile:currentUserProfile));
   }
 
   void _toggleBookmark(outletID,offerID, context) async {
@@ -56,6 +59,7 @@ class _OfferDetailsState extends State<OfferDetails> {
     var bookmark = await Services().toggleBokmark(data:data);
 
     print(bookmark['desc']);
+    bookmarkUpdated = "true";
 
     Scaffold.of(context).showSnackBar(SnackBar(content: Text(bookmark['desc'], textAlign: TextAlign.center,),));
 
@@ -64,6 +68,7 @@ class _OfferDetailsState extends State<OfferDetails> {
       setState(() {
         isBookmarked = "true";
       });
+      
     }else {
       
       setState(() {
@@ -91,14 +96,14 @@ class _OfferDetailsState extends State<OfferDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.oItem['outlet']['outletName']),
+          title: Text(widget.outletName),
           backgroundColor: primaryColor,
         ),
         body: BlocBuilder<OfferdetailsBloc, OfferdetailsState>(
             builder: (context, state) {
           if (state is OfferdetailsSuccess) {
             var offerInfo = state.offerdetails;
-            isBookmarked = offerInfo['offerInfo']['isBookmarked'];
+            if(bookmarkUpdated=="false") isBookmarked = offerInfo['offerInfo']['isBookmarked'];
             var phone = HelperMethods().searchArray(
                 offerInfo['outlet']['communications'],
                 "communicationType",

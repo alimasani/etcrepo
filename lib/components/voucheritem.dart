@@ -1,14 +1,18 @@
+import 'package:etc/bloc/authenticate/authenticate_bloc.dart';
 import 'package:etc/components/voucherpopup.dart';
 import 'package:etc/helper/globals.dart';
 import 'package:etc/helper/methods.dart';
 import 'package:etc/theme/style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Voucheritem extends StatelessWidget {
   final dynamic voucherItem;
   final String validUntil;
   final String isUserEntitledOffer;
-  const Voucheritem({Key key, this.voucherItem, this.validUntil, this.isUserEntitledOffer})
+  const Voucheritem(
+      {Key key, this.voucherItem, this.validUntil, this.isUserEntitledOffer})
       : super(key: key);
 
   @override
@@ -209,9 +213,10 @@ class Voucheritem extends StatelessWidget {
                                 ),
                               ),
                               Expanded(
-                                                              child: Container(
+                                child: Container(
                                   padding: EdgeInsets.all(10.0),
-                                  decoration: BoxDecoration(color: Colors.white),
+                                  decoration:
+                                      BoxDecoration(color: Colors.white),
                                   child: SingleChildScrollView(
                                       child: Column(
                                     crossAxisAlignment:
@@ -223,17 +228,139 @@ class Voucheritem extends StatelessWidget {
                                               fontWeight: FontWeight.w600,
                                               fontSize: 16.0)),
                                       SizedBox(height: 7.0),
-                                      Row(children: <Widget>[
-                                        Container(child: Text("S", style: TextStyle(color: Colors.white),), margin: EdgeInsets.only(right:5.0), padding:EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 3.0), color: (voucherItem['voucherValidities']['validWeekdays'].contains("Sun"))?primaryColor:Colors.red,),
-                                        Container(child: Text("M", style: TextStyle(color: Colors.white),), margin: EdgeInsets.only(right:5.0), padding:EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 3.0), color: (voucherItem['voucherValidities']['validWeekdays'].contains("Mon"))?primaryColor:Colors.red,),
-                                        Container(child: Text("T", style: TextStyle(color: Colors.white),), margin: EdgeInsets.only(right:5.0), padding:EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 3.0), color: (voucherItem['voucherValidities']['validWeekdays'].contains("Tue"))?primaryColor:Colors.red,),
-                                        Container(child: Text("W", style: TextStyle(color: Colors.white),), margin: EdgeInsets.only(right:5.0), padding:EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 3.0), color: (voucherItem['voucherValidities']['validWeekdays'].contains("Wed"))?primaryColor:Colors.red,),
-                                        Container(child: Text("T", style: TextStyle(color: Colors.white),), margin: EdgeInsets.only(right:5.0), padding:EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 3.0), color: (voucherItem['voucherValidities']['validWeekdays'].contains("Thu"))?primaryColor:Colors.red,),
-                                        Container(child: Text("F", style: TextStyle(color: Colors.white),), margin: EdgeInsets.only(right:5.0), padding:EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 3.0), color: (voucherItem['voucherValidities']['validWeekdays'].contains("Fri"))?primaryColor:Colors.red,),
-                                        Container(child: Text("S", style: TextStyle(color: Colors.white),), margin: EdgeInsets.only(right:5.0), padding:EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 3.0), color: (voucherItem['voucherValidities']['validWeekdays'].contains("Sat"))?primaryColor:Colors.red,),
-                                        Container(child: Text("Public Holidays", style: TextStyle(color: Colors.white),), margin: EdgeInsets.only(right:5.0), padding:EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 3.0), color: (voucherItem['voucherValidities']['validOnPublicHolidays']=="true")?primaryColor:Colors.red,),
-                                        
-                                      ],),
+                                      Row(
+                                        children: <Widget>[
+                                          Container(
+                                            child: Text(
+                                              "S",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            margin: EdgeInsets.only(right: 5.0),
+                                            padding: EdgeInsets.fromLTRB(
+                                                5.0, 5.0, 5.0, 3.0),
+                                            color: (voucherItem[
+                                                            'voucherValidities']
+                                                        ['validWeekdays']
+                                                    .contains("Sun"))
+                                                ? primaryColor
+                                                : Colors.red,
+                                          ),
+                                          Container(
+                                            child: Text(
+                                              "M",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            margin: EdgeInsets.only(right: 5.0),
+                                            padding: EdgeInsets.fromLTRB(
+                                                5.0, 5.0, 5.0, 3.0),
+                                            color: (voucherItem[
+                                                            'voucherValidities']
+                                                        ['validWeekdays']
+                                                    .contains("Mon"))
+                                                ? primaryColor
+                                                : Colors.red,
+                                          ),
+                                          Container(
+                                            child: Text(
+                                              "T",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            margin: EdgeInsets.only(right: 5.0),
+                                            padding: EdgeInsets.fromLTRB(
+                                                5.0, 5.0, 5.0, 3.0),
+                                            color: (voucherItem[
+                                                            'voucherValidities']
+                                                        ['validWeekdays']
+                                                    .contains("Tue"))
+                                                ? primaryColor
+                                                : Colors.red,
+                                          ),
+                                          Container(
+                                            child: Text(
+                                              "W",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            margin: EdgeInsets.only(right: 5.0),
+                                            padding: EdgeInsets.fromLTRB(
+                                                5.0, 5.0, 5.0, 3.0),
+                                            color: (voucherItem[
+                                                            'voucherValidities']
+                                                        ['validWeekdays']
+                                                    .contains("Wed"))
+                                                ? primaryColor
+                                                : Colors.red,
+                                          ),
+                                          Container(
+                                            child: Text(
+                                              "T",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            margin: EdgeInsets.only(right: 5.0),
+                                            padding: EdgeInsets.fromLTRB(
+                                                5.0, 5.0, 5.0, 3.0),
+                                            color: (voucherItem[
+                                                            'voucherValidities']
+                                                        ['validWeekdays']
+                                                    .contains("Thu"))
+                                                ? primaryColor
+                                                : Colors.red,
+                                          ),
+                                          Container(
+                                            child: Text(
+                                              "F",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            margin: EdgeInsets.only(right: 5.0),
+                                            padding: EdgeInsets.fromLTRB(
+                                                5.0, 5.0, 5.0, 3.0),
+                                            color: (voucherItem[
+                                                            'voucherValidities']
+                                                        ['validWeekdays']
+                                                    .contains("Fri"))
+                                                ? primaryColor
+                                                : Colors.red,
+                                          ),
+                                          Container(
+                                            child: Text(
+                                              "S",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            margin: EdgeInsets.only(right: 5.0),
+                                            padding: EdgeInsets.fromLTRB(
+                                                5.0, 5.0, 5.0, 3.0),
+                                            color: (voucherItem[
+                                                            'voucherValidities']
+                                                        ['validWeekdays']
+                                                    .contains("Sat"))
+                                                ? primaryColor
+                                                : Colors.red,
+                                          ),
+                                          Container(
+                                            child: Text(
+                                              "Public Holidays",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            margin: EdgeInsets.only(right: 5.0),
+                                            padding: EdgeInsets.fromLTRB(
+                                                5.0, 5.0, 5.0, 3.0),
+                                            color: (voucherItem[
+                                                            'voucherValidities']
+                                                        [
+                                                        'validOnPublicHolidays'] ==
+                                                    "true")
+                                                ? primaryColor
+                                                : Colors.red,
+                                          ),
+                                        ],
+                                      ),
                                       SizedBox(height: 7.0),
                                       Divider(
                                         color: grayColor,
@@ -277,7 +404,8 @@ class Voucheritem extends StatelessWidget {
                                               fontWeight: FontWeight.w600,
                                               fontSize: 16.0)),
                                       SizedBox(height: 7.0),
-                                      finePrintText(voucherItem['voucherTandCs']),
+                                      finePrintText(
+                                          voucherItem['voucherTandCs']),
                                       SizedBox(height: 7.0),
                                       Divider(
                                         color: grayColor,
@@ -295,25 +423,20 @@ class Voucheritem extends StatelessWidget {
                                   )),
                                 ),
                               ),
-                              SizedBox(height:5.0),
+                              SizedBox(height: 5.0),
                             ],
                           ),
                         ),
-                        FlatButton(
-                          onPressed: () {},
-                          child: Container(
-                              padding:EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 12.0),
-                              child: Text(
-                                "Redeem Now".toUpperCase(),
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16.0,
-                                    height: 1.2,
-                                    fontWeight: FontWeight.w600),
-                              )),
-                          color: blueColor,
-                        ),
-                        SizedBox(height:10.0),
+                        BlocBuilder<AuthenticateBloc,AuthenticateState>(
+                          builder: (context,state){
+                            if(state is AuthenticateSuccess){
+                              return _getButton(context, voucherItem,"true",isUserEntitledOffer);
+                            }else {
+                              return _getButton(context, voucherItem,"false",isUserEntitledOffer);
+                            }
+                        } ,),
+                        
+                        SizedBox(height: 10.0),
                       ],
                     ),
                   ));
@@ -354,9 +477,8 @@ class Voucheritem extends StatelessWidget {
                     padding: EdgeInsets.fromLTRB(7.0, 4.0, 5.0, 2.0),
                     width: MediaQuery.of(context).size.width * 0.8,
                     decoration: BoxDecoration(color: lightGrayColor),
-                    child: Stack(
-                                          children:<Widget>[
-                                            Column(
+                    child: Stack(children: <Widget>[
+                      Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
                             Text(
@@ -386,17 +508,22 @@ class Voucheritem extends StatelessWidget {
                                 height: 1.4,
                               ),
                             ),
-                            
                           ]),
-                          Align(
-                            alignment: Alignment(1,0.90),
-                            child: Container(
-                              padding:EdgeInsets.fromLTRB(4.0, 2.0,4.0, 2.0),
-                              decoration: BoxDecoration(
-                                color:blueColor
-                              ),
-                              child: Text("Reedem", style: TextStyle(color:Colors.white, fontSize: 12.0, fontWeight: FontWeight.w300),),) ,)                ] 
-                    ),
+                      Align(
+                        alignment: Alignment(1, 0.90),
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 2.0),
+                          decoration: BoxDecoration(color: blueColor),
+                          child: Text(
+                            "Reedem",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w300),
+                          ),
+                        ),
+                      )
+                    ]),
                   ),
                 )
               ],
@@ -417,4 +544,89 @@ Widget finePrintText(List<dynamic> strings) {
                   fontWeight: FontWeight.w400,
                   fontSize: 13.0)))
           .toList());
+}
+
+Widget _getButton(context, voucherItem,loggedIn,isUserEntitled) {
+
+  if(loggedIn=="true"){
+
+    if(voucherItem['voucherValidities']['isRedeemableToday']=="false"){
+      return FlatButton(
+      onPressed: () {
+        
+      },
+      child: Container(
+          padding: EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 12.0),
+          child: Text(
+            "NOT VALID TODAY".toUpperCase(),
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 16.0,
+                height: 1.2,
+                fontWeight: FontWeight.w600),
+          )),
+      color: Colors.red,
+    );
+    }
+    else if(isUserEntitled=="false"){
+      return FlatButton(
+    onPressed: () {
+      Navigator.of(context)
+          .pushNamed("/login");
+    },
+    child: Container(
+        padding: EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 12.0),
+        child: Text(
+          "Upgrade subscription to Redeem".toUpperCase(),
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 16.0,
+              height: 1.2,
+              fontWeight: FontWeight.w600),
+        )),
+    color: primaryColor,
+  );
+    }else {
+      return FlatButton(
+      onPressed: () {
+        if(voucherItem['redemptionRequireOutletPin']=="true"){
+          Navigator.of(context)
+            .pushNamed("/merchantPin", arguments: {"voucher": voucherItem});
+        }else {
+          
+        }
+      },
+      child: Container(
+          padding: EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 12.0),
+          child: Text(
+            "Redeem Now".toUpperCase(),
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 16.0,
+                height: 1.2,
+                fontWeight: FontWeight.w600),
+          )),
+      color: blueColor,
+    );
+    }
+
+  }else {
+    return FlatButton(
+    onPressed: () {
+      Navigator.of(context)
+          .pushNamed("/login");
+    },
+    child: Container(
+        padding: EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 12.0),
+        child: Text(
+          "LOGIN TO REDEEM".toUpperCase(),
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 16.0,
+              height: 1.2,
+              fontWeight: FontWeight.w600),
+        )),
+    color: primaryColor,
+  );
+  }
 }

@@ -23,7 +23,7 @@ class AuthenticateBloc extends Bloc<AuthenticateEvent, AuthenticateState> {
 
     if(event is AppStarted){
       final status = await _services.getLocalStorage(key:"authToken");
-      if(status!=null || status!=''){
+      if(status!=null && status!=''){
 
         final profile = await _services.getProfile();
         print(profile);

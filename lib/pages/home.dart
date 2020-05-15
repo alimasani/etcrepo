@@ -74,7 +74,7 @@ class _HomeState extends State<Home> {
   }
 }
 
-Widget _activeChild(activeTab,profile){
+_activeChild(activeTab,profile){
   if(activeTab==AppTab.home){
     return TabHome(userProfile:profile);
   }else if(activeTab==AppTab.list_offer){

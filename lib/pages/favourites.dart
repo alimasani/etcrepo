@@ -58,7 +58,7 @@ class _FavouritesState extends State<Favourites> {
                               builder: (_) => BlocProvider(
                                 create: (context) =>
                                     OfferdetailsBloc(Services()),
-                                child: OfferDetails(oItem: offerList[index]),
+                                child: OfferDetails(offerId: offerList[index]['offerInfo']['offerID'],outletId: offerList[index]['outlet']['outletID'],outletName: offerList[index]['outlet']['outletName'],),
                               ),
                               //(_)=>OfferDetails(oItem: itm,)
                             ));

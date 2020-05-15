@@ -5,6 +5,9 @@ import 'package:etc/components/brandItem.dart';
 import 'package:etc/components/categoryItem.dart';
 import 'package:etc/components/offerItem.dart';
 import 'package:etc/components/searchbar.dart';
+import 'package:etc/components/shimmer/shimmer-brandItem.dart';
+import 'package:etc/components/shimmer/shimmer-catitem.dart';
+import 'package:etc/components/shimmer/shimmer-offeritem.dart';
 import 'package:etc/helper/api.dart';
 import 'package:etc/helper/data-process.dart';
 import 'package:etc/helper/globals.dart';
@@ -15,11 +18,17 @@ import 'package:etc/theme/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:getflutter/getflutter.dart';
+import 'package:shimmer/shimmer.dart';
 
-class TabHome extends StatelessWidget {
+class TabHome extends StatefulWidget {
   final dynamic userProfile;
   const TabHome({Key key, this.userProfile}) : super(key: key);
 
+  @override
+  _TabHomeState createState() => _TabHomeState();
+}
+
+class _TabHomeState extends State<TabHome> {
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +108,16 @@ class TabHome extends StatelessWidget {
                             );
                           })));
                 } else {
-                  return Container(child: Text("Loading...."));
+                  return Container(
+                      height: 200.0,
+                      child: GridView.count(
+                          physics: NeverScrollableScrollPhysics(),
+                          mainAxisSpacing: 20.0,
+                          childAspectRatio: 3 / 2,
+                          crossAxisCount: 3,
+                          children: List.generate(6, (index) {
+                            return shimmerCatItem(context);
+                          })));
                 }
               },
             ),
@@ -121,6 +139,9 @@ class TabHome extends StatelessWidget {
                   print(offersList);
                   return Container(
                       child: GFCarousel(
+                        onPageChanged: (index){
+                          setState((){});
+                        },
                     items: offersList
                         .map<Widget>((itm) => GestureDetector(
                             onTap: () {
@@ -128,13 +149,14 @@ class TabHome extends StatelessWidget {
                                 builder: (_) => BlocProvider(
                                   create: (context) =>
                                       OfferdetailsBloc(Services()),
-                                  child: OfferDetails(oItem: itm),
+                                  child: OfferDetails(offerId: itm['offerInfo']['offerID'],outletId: itm['outlet']['outletID'],outletName: itm['outlet']['outletName'],),
                                 ),
 
                                 //(_)=>OfferDetails(oItem: itm,)
                               ));
                             },
                             child: OfferItem(offerItem: itm)))
+                            
                         .toList(),
                     height: 200.0,
                     viewportFraction: 1.0,
@@ -148,7 +170,7 @@ class TabHome extends StatelessWidget {
                 } else if (state is FeaturedOffersError) {
                   return Container(child: Text(state.message));
                 } else {
-                  return Container(child: Text("Loading...."));
+                  return shimmerOfferItem(context);
                 }
               },
             ),
@@ -169,11 +191,16 @@ class TabHome extends StatelessWidget {
                   final brandsList = state.brands;
                   print(brandsList);
                   return Container(
-                      child: Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: EdgeInsets.all(0.0),
+                    margin: EdgeInsets.all(0.0),
+                    child: Padding(
+                    padding: const EdgeInsets.only(top:0.0,left:10.0,right:10.0,bottom:0.0),
                     child: GFCarousel(
+                      onPageChanged: (index){
+                        setState((){});
+                      },
                       items: _brandsPage(brandsList,context),
-                      height: 100.0,
+                      height: 130.0,
                     viewportFraction: 1.0,
                     autoPlay: true,
                     reverse: true,
@@ -186,7 +213,17 @@ class TabHome extends StatelessWidget {
                 } else if (state is BrandsError) {
                   return Container(child: Text(state.message));
                 } else {
-                  return Container(child: Text("Loading...."));
+                  return Container(
+                    padding: EdgeInsets.only(left:10.0,right:10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                      shimmerBrandItem(context),
+                      shimmerBrandItem(context),
+                      shimmerBrandItem(context),
+                      shimmerBrandItem(context),
+                    ],),
+                  );
                 }
               },
             ),
@@ -194,6 +231,8 @@ class TabHome extends StatelessWidget {
         ));
   }
 }
+
+
 
 _brandsPage(itms,context) {
   List<Widget> list = List<Widget>();

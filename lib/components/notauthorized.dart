@@ -16,7 +16,22 @@ class NotAuthorized extends StatelessWidget {
             SizedBox(height:40.0),
             Text("Oops! It seems you are not logged-in", textAlign: TextAlign.center, style: TextStyle(fontSize: 20.0, color: blueColor),),
             SizedBox(height:40.0),
-            RaisedButton(onPressed: null, child:Text("Join"))
+            FlatButton(
+                      onPressed: () {
+                          Navigator.of(context).pushNamed('/login');
+                      },
+                      child: Container(
+                          padding:EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 12.0),
+                          child: Text(
+                            "JOIN".toUpperCase(),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.0,
+                                height: 1.2,
+                                fontWeight: FontWeight.w600),
+                          )),
+                      color: blueColor,
+                    )
           ]
         ),
       ),
