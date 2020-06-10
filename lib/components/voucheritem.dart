@@ -185,7 +185,7 @@ class Voucheritem extends StatelessWidget {
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.29,
-                                        padding: EdgeInsets.all(10.0),
+                                        padding: EdgeInsets.all(5.0),
                                         child: Column(children: <Widget>[
                                           Image.asset(
                                               'assets/img/icon-chart-gray.png',
@@ -197,6 +197,7 @@ class Voucheritem extends StatelessWidget {
                                                 height: 1.4,
                                                 fontSize: 13.0),
                                             textAlign: TextAlign.center,
+                                            
                                           ),
                                           Text(
                                             voucherItem['voucherValidities']
@@ -443,7 +444,6 @@ class Voucheritem extends StatelessWidget {
             });
       },
       child: Container(
-        height: 70.0,
         margin: EdgeInsets.fromLTRB(0, 5.0, 0, 5.0),
         child: Card(
             shape: RoundedRectangleBorder(
@@ -469,7 +469,7 @@ class Voucheritem extends StatelessWidget {
                           fontWeight: FontWeight.w600),
                     ),
                   ),
-                  decoration: BoxDecoration(color: blueColor),
+                  decoration: BoxDecoration(color: primaryColor),
                 ),
                 Expanded(
                   child: Container(
@@ -492,9 +492,7 @@ class Voucheritem extends StatelessWidget {
                             ),
                             Text(
                               voucherItem['voucherValidities']
-                                      ['validForDescription'] +
-                                  " until " +
-                                  formattedDate,
+                                      ['validForDescription'],
                               style: TextStyle(
                                 fontSize: 13.0,
                                 height: 1.4,
@@ -513,7 +511,7 @@ class Voucheritem extends StatelessWidget {
                         alignment: Alignment(1, 0.90),
                         child: Container(
                           padding: EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 2.0),
-                          decoration: BoxDecoration(color: blueColor),
+                          decoration: BoxDecoration(color: primaryColor),
                           child: Text(
                             "Reedem",
                             style: TextStyle(
@@ -593,7 +591,7 @@ Widget _getButton(context, voucherItem,loggedIn,isUserEntitled) {
           Navigator.of(context)
             .pushNamed("/merchantPin", arguments: {"voucher": voucherItem});
         }else {
-          
+          Navigator.of(context).pushNamed("/password",arguments:{"voucher":voucherItem,"isFirstLogin":"false"});
         }
       },
       child: Container(
@@ -606,7 +604,7 @@ Widget _getButton(context, voucherItem,loggedIn,isUserEntitled) {
                 height: 1.2,
                 fontWeight: FontWeight.w600),
           )),
-      color: blueColor,
+      color: primaryColor,
     );
     }
 

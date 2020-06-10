@@ -38,7 +38,7 @@ const footerActiveIcons = ["assets/img/icon-calendar-active.png","assets/img/ico
 
 //Generic
 const rowsPerPage = "20";
-const googleDocURL = "https://docs.google.com/viewer?embaded=true&url=";
+const googleDocURL = "http://drive.google.com/viewerng/viewer?embedded=true&url=";
 const faqURL = "https://voucherskout.s3.eu-central-1.amazonaws.com/images/production/miscellaneous/202002241730_SamsungPay_VoucherSkout_FAQ.pdf";
 const termsURL = "https://voucherskout.s3.eu-central-1.amazonaws.com/images/production/miscellaneous/202002241730_SamsungPay_VoucherSkout_T%26C.pdf";
 const privacyURL = "https://voucherskout.s3.eu-central-1.amazonaws.com/images/production/miscellaneous/202002241730_SamsungPay_VoucherSkout_PrivacyPolicy.pdf";
@@ -46,4 +46,10 @@ const privacyURL = "https://voucherskout.s3.eu-central-1.amazonaws.com/images/pr
 
 dynamic currentFilterParams = {};
 dynamic currentUserProfile = {};
+dynamic currentOfferDetails = {};
+dynamic gCategories;
+dynamic gFilters;
 String voucherCountRef = "1-V";
+String showFirstPopup = "false";
+dynamic gCountries = {};
+dynamic gSubscriptionPlans = {};

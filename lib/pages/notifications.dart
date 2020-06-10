@@ -1,6 +1,7 @@
 import 'package:etc/bloc/authenticate/authenticate_bloc.dart';
 import 'package:etc/bloc/bloc.dart';
 import 'package:etc/components/loader.dart';
+import 'package:etc/components/norecords.dart';
 import 'package:etc/components/notauthorized.dart';
 import 'package:etc/helper/globals.dart';
 import 'package:etc/helper/methods.dart';
@@ -55,8 +56,10 @@ class _NotificationsState extends State<Notifications> {
                           )
                         ),);
                     });
+          } else if(state is NotificationError){
+              return NoRecords(icon:"",title:"Oops!",message:"No notifications for you yet. You will have one soon.");
           } else {
-            return CustomLoader();
+              return CustomLoader();
           }
         },
       ),

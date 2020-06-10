@@ -1,10 +1,17 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:etc/bloc/authenticate/authenticate_bloc.dart';
 import 'package:etc/bloc/bloc.dart';
 import 'package:etc/helper/globals.dart';
+import 'package:etc/helper/services.dart';
 import 'package:etc/pages/webview.dart';
 import 'package:flutter/material.dart';
 import 'package:etc/theme/style.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:launch_review/launch_review.dart';
+
 
 class SideMenu extends StatefulWidget {
   SideMenu({Key key}) : super(key: key);
@@ -14,30 +21,49 @@ class SideMenu extends StatefulWidget {
 }
 
 class _SideMenuState extends State<SideMenu> {
-  List<Color> _gradients = [primaryColor, blueColor];
+  List<Color> _gradients = [primaryColor, primaryColor]; //blueColor
   
-  _doLogout(){
-      BlocProvider.of<UsersBloc>(context).add(
-        LogoutUser()
+  _doLogout() async {
+      
+      final user = await Services().logoutUser();
+      final removeToken = await Services().deleteLocalStorage(key:"authToken");
+      
+      BlocProvider.of<AuthenticateBloc>(context).add(
+        LoggedOut()
       );
+      setState(() {});
   }
   _gotoLogin(){
     Navigator.pushNamed(context, '/login');                        
+  }
+
+  _openStore(android,ios){
+    if(Platform.isIOS){
+       launch("itms://itunes.apple.com/app/"+ios);
+    }
+
+    if(Platform.isAndroid){
+      launch("market://developer?id="+android);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticateBloc, AuthenticateState>(
       builder: (context, state) {
+        
+        if(state is AuthenticateSuccess){
+          final profile = state.profile;
+        }else {
+          final profile = {};
+        }
         return Container(
           child: Drawer(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                BlocBuilder<ProfileBloc,ProfileState>(
-                  builder: (context,state){
                     
-                    return DrawerHeader(
+                DrawerHeader(
                   margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -47,7 +73,7 @@ class _SideMenuState extends State<SideMenu> {
                         Container(
                           width: 80.0,
                           height: 80.0,
-                          child: (state is ProfileSuccess)? Image.network(state.profile['userProfile']['linkReferences'][0]['link'], fit: BoxFit.cover,) :Icon(
+                          child: (state is AuthenticateSuccess)? CachedNetworkImage(imageUrl:state.profile['userProfile']['linkReferences'][0]['link'], fit: BoxFit.cover,) :Icon(
                             Icons.add,
                             color: grayColor,
                             size: 35.0,
@@ -58,7 +84,7 @@ class _SideMenuState extends State<SideMenu> {
                           ),
                         ),
                         SizedBox(height: 15.0),
-                        Text((state is ProfileSuccess)? "Marhaba " + state.profile['userProfile']['firstName'] :"Marhaba",
+                        Text((state is AuthenticateSuccess)? "Marhaba " + state.profile['userProfile']['firstName'] :"Marhaba",
                             style:
                                 TextStyle(color: Colors.white, fontSize: 20.0))
                       ],
@@ -67,9 +93,7 @@ class _SideMenuState extends State<SideMenu> {
                   decoration: BoxDecoration(
                     color: primaryColor,
                   ),
-                );
-                  },),
-                
+                ),
                 Expanded(
                   child: Container(
                     child: Padding(
@@ -77,6 +101,9 @@ class _SideMenuState extends State<SideMenu> {
                       child: Column(
                         children: <Widget>[
                           ListTile(
+                            onTap:(){
+                              Navigator.of(context).pushNamed("/settings");
+                            },
                             title: Text('Settings', style: sideMenuText),
                           ),
                           ListTile(
@@ -113,10 +140,14 @@ class _SideMenuState extends State<SideMenu> {
                             },
                             title: Text('Privacy Policy', style: sideMenuText),
                           ),
+                          // ListTile(
+                          //   title: Text('How it Works', style: sideMenuText),
+                          // ),
                           ListTile(
-                            title: Text('How it Works', style: sideMenuText),
-                          ),
-                          ListTile(
+                            onTap: (){
+                              // _openStore("com.etc.godesto","1446470008");
+                              LaunchReview.launch(androidAppId: "com.etc.godesto", iOSAppId: "1446470008", writeReview: true);
+                            },
                             title: Text('Rate Us', style: sideMenuText),
                           ),
                           ListTile(

@@ -25,29 +25,29 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
         params['startDateTime']=event.startDateTime;
         params['endDateTime']=event.endDateTime;
         final eveList = await _services.getEvents(data:params,start:"0",offset:rowsPerPage);
-        var newList = [];
-        int j =0;
+        // var newList = [];
+        // int j =0;
         
-        for(var k=0; k<eveList.length;k++){
+        // for(var k=0; k<eveList.length;k++){
           
-          var eve = eveList[k];
+        //   var eve = eveList[k];
           
-          var eveDays = DateTime.parse(eve['endDateTime']).difference(DateTime.parse(eve['startDateTime'])).inDays;  
+        //   var eveDays = DateTime.parse(eve['endDateTime']).difference(DateTime.parse(eve['startDateTime'])).inDays;  
 
-          for(var i=0; i<(eveDays+1); i++){
-                var newObj= {};    
-                newObj["eventID"] = eve["eventID"];
-                newObj["eventTitle"] = eve["eventTitle"];
-                newObj["eventText"] = eve["eventText"];
-                newObj["eventImage"] = eve["eventImage"];
-                newObj["startDateTime"] = eve["startDateTime"];
-                newObj["endDateTime"] = eve["endDateTime"];
-                newObj['date']=DateTime.parse(eve['startDateTime']).add(Duration(days:i)).toString();
-                newList.add(newObj);
-            }
-        }  
+        //   for(var i=0; i<(eveDays+1); i++){
+        //         var newObj= {};    
+        //         newObj["eventID"] = eve["eventID"];
+        //         newObj["eventTitle"] = eve["eventTitle"];
+        //         newObj["eventText"] = eve["eventText"];
+        //         newObj["eventImage"] = eve["eventImage"];
+        //         newObj["startDateTime"] = eve["startDateTime"];
+        //         newObj["endDateTime"] = eve["endDateTime"];
+        //         newObj['date']=DateTime.parse(eve['startDateTime']).add(Duration(days:i)).toString();
+        //         newList.add(newObj);
+        //     }
+        // }  
 
-        yield EventsSuccess(newList);
+        yield EventsSuccess(eveList);
         }on BadRequestException {
           yield EventsError("No Records Found");
         }on UnauthorisedException {

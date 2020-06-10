@@ -4,7 +4,7 @@ class DataProcess {
   
   dynamic encode(String method, dynamic data) {
     if(method=="base64"){
-      print(json.encode(data));
+      
       if(data is String){
         return base64Encode(utf8.encode(data));
       }else {

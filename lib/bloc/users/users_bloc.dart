@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:etc/helper/services.dart';
 
 import '../bloc.dart';
@@ -40,9 +39,11 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
       try {
         final user = await services.logoutUser();
         final removeToken = await services.deleteLocalStorage(key:"authToken");
-        authenticateBloc.add(AppStarted());
+        authenticateBloc.add(LoggedOut());
+        yield(UsersError("Logged out"));
       }catch (e){
-        authenticateBloc.add(AppStarted());
+        authenticateBloc.add(LoggedOut());
+        yield(UsersError("Logged out"));
       }
       
     }

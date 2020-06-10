@@ -25,10 +25,17 @@ class AuthenticateBloc extends Bloc<AuthenticateEvent, AuthenticateState> {
       final status = await _services.getLocalStorage(key:"authToken");
       if(status!=null && status!=''){
 
-        final profile = await _services.getProfile();
-        print(profile);
-        currentUserProfile = profile;
-        yield AuthenticateSuccess(profile);
+        try{
+          final profile = await _services.getProfile();
+          print(profile);
+          currentUserProfile = profile;
+          yield AuthenticateSuccess(profile);
+        }catch (e){
+          print (e);
+          currentUserProfile = null;
+          yield AuthenticateError();
+        }
+        
       }else {
         currentUserProfile = null;
         yield AuthenticateError();

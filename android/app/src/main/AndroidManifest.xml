@@ -5,10 +5,23 @@
          In most cases you can leave this as-is, but you if you want to provide
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="etc"
-        android:icon="@mipmap/ic_launcher">
+        android:label="ETC"
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
+        >
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyB0p4ceOuOv8P-xsn-NaWSLgq0aHN_WLBM"/>
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

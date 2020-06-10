@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:etc/bloc/bloc.dart';
 import 'package:etc/components/insiderinfo.dart';
 import 'package:etc/components/linedivider.dart';
@@ -61,18 +62,20 @@ class _OfferDetailsState extends State<OfferDetails> {
     print(bookmark['desc']);
     bookmarkUpdated = "true";
 
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text(bookmark['desc'], textAlign: TextAlign.center,),));
+    Scaffold.of(context).showSnackBar(SnackBar(behavior:SnackBarBehavior.floating,content: Text(bookmark['desc'], textAlign: TextAlign.center,),));
 
     if(bookmark['desc']=='Bookmark Added Successfully'){
       
       setState(() {
         isBookmarked = "true";
+        currentOfferDetails['isBookmarked'] = "true";
       });
       
     }else {
       
       setState(() {
         isBookmarked = "false";
+        currentOfferDetails['isBookmarked'] = "false";
       });
     }
 
@@ -98,11 +101,15 @@ class _OfferDetailsState extends State<OfferDetails> {
         appBar: AppBar(
           title: Text(widget.outletName),
           backgroundColor: primaryColor,
+          centerTitle: true,
         ),
         body: BlocBuilder<OfferdetailsBloc, OfferdetailsState>(
             builder: (context, state) {
           if (state is OfferdetailsSuccess) {
             var offerInfo = state.offerdetails;
+            var addArray = [offerInfo['outlet']['locality']['location']['locationName'],offerInfo['outlet']['locality']['cluster'],offerInfo['outlet']['locality']['subCluster'],offerInfo['outlet']['locality']['city']['cityName']];
+            addArray.removeWhere((v) =>  v==null || v.toLowerCase() == 'null' || v=='' || v.toLowerCase()=='none');
+            var address = addArray.join(", ");
             if(bookmarkUpdated=="false") isBookmarked = offerInfo['offerInfo']['isBookmarked'];
             var phone = HelperMethods().searchArray(
                 offerInfo['outlet']['communications'],
@@ -124,12 +131,12 @@ class _OfferDetailsState extends State<OfferDetails> {
                 Container(
                     child: GFCarousel(
                   items: offerInfo['outlet']['displayImages']
-                      .map<Widget>((itm) => Image.network(itm['imageURL']))
+                      .map<Widget>((itm) => CachedNetworkImage(imageUrl:itm['imageURL']))
                       .toList(),
                   aspectRatio: 16 / 8,
                   viewportFraction: 1.0,
                   autoPlay: true,
-                  reverse: true,
+                  reverse: false,
                   pagination: false,
                   passiveIndicator: lightGrayColor,
                   activeIndicator: grayColor,
@@ -144,13 +151,15 @@ class _OfferDetailsState extends State<OfferDetails> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        if (offerInfo['offerInfo']['priceGuideURL'] != null)
-                          InkWell(
+                        if (offerInfo['offerInfo']['priceGuideURL'] != null) InkWell(
                               child: Image.asset(
                                 "assets/img/icon-menu.png",
                                 height: 30.0,
                               ),
                               onTap: () {
+                                print(googleDocURL +
+                                                offerInfo['offerInfo']
+                                                    ['priceGuideURL']);
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -246,7 +255,7 @@ class _OfferDetailsState extends State<OfferDetails> {
                                                                   FontWeight
                                                                       .w600),
                                                         )),
-                                                    color: blueColor,
+                                                    color: primaryColor,
                                                   ),
                                                   SizedBox(height: 10.0),
                                                 ]),
@@ -269,7 +278,7 @@ class _OfferDetailsState extends State<OfferDetails> {
                         InkWell(child: Image.asset((isBookmarked=="false")?"assets/img/icon-star.png":"assets/img/icon-star-active.png", height: 30.0),
                             onTap:(){
                               if(state is! AuthenticateSuccess){
-                                Scaffold.of(context).showSnackBar(SnackBar(content: Text("Login to favourite this offer.", textAlign: TextAlign.center,),backgroundColor: Colors.red,));
+                                Scaffold.of(context).showSnackBar(SnackBar(behavior:SnackBarBehavior.floating,content: Text("Login to favourite this offer.", textAlign: TextAlign.center,),backgroundColor: Colors.red,));
                               }else {
                                 _toggleBookmark(offerInfo['outlet']['outletID'],offerInfo['offerInfo']['offerID'],context);
                               }
@@ -357,6 +366,7 @@ class _OfferDetailsState extends State<OfferDetails> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(offerInfo['outlet']['outletName'],
+                          textAlign: TextAlign.center,
                               style: TextStyle(
                                 shadows: [
                                   Shadow(
@@ -370,11 +380,8 @@ class _OfferDetailsState extends State<OfferDetails> {
                                 height: 1.2,
                               )),
                           Text(
-                              offerInfo['outlet']['locality']['location']
-                                      ['locationName'] +
-                                  ", " +
-                                  offerInfo['outlet']['locality']['city']
-                                      ['cityName'],
+                              address,
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                   shadows: [
                                     Shadow(
@@ -405,7 +412,6 @@ class _OfferDetailsState extends State<OfferDetails> {
                                   height: 1.5)),
                         ]),
                   ),
-                  height: 110.0,
                   margin: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 10.0),
                   decoration: BoxDecoration(
                       image: DecorationImage(
@@ -467,35 +473,38 @@ class _OfferDetailsState extends State<OfferDetails> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: offerInfo['outlet']['workingHours']
                           ['formattedWorkingHrs']
-                      .map<Widget>((itm) => Row(
-                            children: <Widget>[
-                              Container(
-                                margin: EdgeInsets.all(10.0),
-                                width: 40.0,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(3.0),
-                                  child: Text(
-                                    itm['weekday'],
-                                    style: contentText,
-                                    textAlign: TextAlign.center,
+                      .map<Widget>((itm) => Container(
+                        padding:EdgeInsets.fromLTRB(10.0,10.0,10.0,0.0),
+                        child: Row(
+                              children: <Widget>[
+                                Container(
+                                  margin:EdgeInsets.only(right:10.0),
+                                  width: 45.0,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: Text(
+                                      itm['weekday'],
+                                      style: (itm['isToday']=='true')?contentTextWhite:contentText,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: primaryColor),
+                                    color: (itm['isToday'] == 'true')
+                                        ? primaryColor
+                                        : Colors.white,
                                   ),
                                 ),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: primaryColor),
-                                  color: (itm['isToday'] == 'true')
-                                      ? primaryColor
-                                      : Colors.white,
-                                ),
-                              ),
-                              Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.8,
-                                  child: Text(
-                                    itm['time'],
-                                    style: contentText,
-                                  ))
-                            ],
-                          ))
+                                Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    child: Text(
+                                      itm['time'],
+                                      style: contentText,
+                                    ))
+                              ],
+                            ),
+                      ))
                       .toList(),
                 ),
                 SizedBox(
@@ -562,7 +571,7 @@ _identifierItem(itm) {
                 Border(bottom: BorderSide(color: Colors.white, width: 0.5))),
         child: Row(
           children: <Widget>[
-            Image.network(i['lightIconUrl'], width: 24.0),
+            CachedNetworkImage(imageUrl:i['lightIconUrl'], width: 24.0),
             SizedBox(
               width: 15.0,
             ),

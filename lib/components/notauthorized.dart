@@ -23,7 +23,7 @@ class NotAuthorized extends StatelessWidget {
                       child: Container(
                           padding:EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 12.0),
                           child: Text(
-                            "JOIN".toUpperCase(),
+                            "LOGIN".toUpperCase(),
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16.0,

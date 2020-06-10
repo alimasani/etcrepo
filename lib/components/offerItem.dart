@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:etc/helper/globals.dart';
 import 'package:etc/theme/style.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class OfferItem extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
           elevation: 0.0,
-          margin: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 2.0),
+          margin: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 2.0),
           color: Colors.white,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -30,7 +31,7 @@ class OfferItem extends StatelessWidget {
                   width: 100.0,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Color.fromRGBO(0, 0, 0, 0.7),
+                      color: Color.fromRGBO(0, 0, 0, 0.50),
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(10.0),
                           topRight: Radius.circular(10.0)),
@@ -41,7 +42,7 @@ class OfferItem extends StatelessWidget {
                           children: <Widget>[
                             Container(
                               height: 60.0,
-                              child: Image.network(offerItem['offerInfo']
+                              child: CachedNetworkImage(imageUrl:offerItem['offerInfo']
                                   ['brand']['brandLogoURL']),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20.0),
@@ -59,8 +60,8 @@ class OfferItem extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
                                       Text(
-                                        offerItem['outlet']['displayName'],
-                                        style: offerTitleWhite,
+                                        offerItem['outlet']['displayName']??'',
+                                        style: offerTitleWhiteWs,
                                         textAlign: TextAlign.left,
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -68,8 +69,8 @@ class OfferItem extends StatelessWidget {
                                         height: 5.0,
                                       ),
                                       Text(
-                                        offerItem['outlet']['displayInfo'],
-                                        style: offerInfoWhite,
+                                        offerItem['outlet']['displayInfo']??'',
+                                        style: offerInfoWhiteWs,
                                         textAlign: TextAlign.left,
                                         overflow: TextOverflow.ellipsis,
                                       )
@@ -86,14 +87,14 @@ class OfferItem extends StatelessWidget {
                                                   ['subscriptionTypes'][0]
                                               .toLowerCase() +
                                           '.png',
-                                      width: 20.0,
+                                      width: 18.0,
                                     ),
                                     Text(
                                       offerItem['offerInfo']
                                           ['subscriptionTypes'][0],
                                       style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 10.0,
+                                          fontSize: 8.0,
                                           height: 1.2),
                                     )
                                   ]),

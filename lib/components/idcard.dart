@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:etc/helper/globals.dart';
 import 'package:etc/helper/methods.dart';
 import 'package:etc/theme/style.dart';
@@ -27,22 +28,22 @@ class IDCard extends StatelessWidget {
                     textAlign: TextAlign.left,
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 18.0,
+                        fontSize: 17.0,
                         fontWeight: FontWeight.w600),
                   ),
                   SizedBox(height: 10.0),
                   Container(
-                      width: 150.0,
-                      height: 140.0,
-                      child: Image.network(
-                        profile['userProfile']['linkReferences'][0]['link'],
+                      width: 130.0,
+                      height: 120.0,
+                      child: CachedNetworkImage(
+                        imageUrl:profile['userProfile']['linkReferences'][0]['link'],
                         width: 130.0,
                         height: 120.0,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.fitWidth,
                       )),
                   SizedBox(height: 5.0),
                   Text(
-                    profile['userProfile']['primaryEmail'],
+                    profile['userProfile']['userName'],
                     style: offerInfoWhite,
                     textAlign: TextAlign.center,
                   ),
@@ -60,7 +61,7 @@ class IDCard extends StatelessWidget {
                 children: <Widget>[
                   Image.asset(
                     "assets/img/logo-white.png",
-                    width: 100.0,
+                    width: 90.0,
                   ),
                   SizedBox(height: 10.0),
                   Text(
@@ -69,32 +70,32 @@ class IDCard extends StatelessWidget {
                           profile['userProfile']['lastName'],
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 16.0,
+                          fontSize: 14.0,
                           fontWeight: FontWeight.w600)),
                   Text('ID: ' + profile['user']['membershipID'],
-                      style: TextStyle(color: Colors.white, fontSize: 14.0)),
+                      style: TextStyle(color: Colors.white, fontSize: 12.0)),
                   SizedBox(
                     height: 5.0,
                   ),
                   Text('Member Since',
-                      style: TextStyle(color: Colors.white, fontSize: 14.0)),
+                      style: TextStyle(color: Colors.white, fontSize: 12.0)),
                   Text(HelperMethods().formatDateTime(format:"dd MMM yyyy HH:mm",dateTime:profile['user']['memberSince']),
-                      style: TextStyle(color: Colors.white, fontSize: 14.0)),
+                      style: TextStyle(color: Colors.white, fontSize: 12.0)),
                   SizedBox(
                     height: 10.0,
                   ),
                   QrImage(
                     data: profile['user']['membershipID']+":"+profile['user']['memberSince']+":"+profile['userProfile']['firstName'] +' ' +profile['userProfile']['lastName']+":"+profile['userProfile']['primaryEmail']+":"+profile['userProfile']['primaryMobile']+":"+profile['userProfile']['linkReferences'][0]['link'],
                     version: QrVersions.auto,
-                    size: 100.0,
+                    size: 90.0,
                     backgroundColor: Colors.white,
-                    padding: EdgeInsets.all(10.0),
+                    padding: EdgeInsets.all(7.0),
                   ),
                 ]),
           )
         ],
       ),
-      height: 230.0,
+      height: 210.0,
       decoration: BoxDecoration(
         border:Border.all(color: Colors.white60),
         borderRadius: BorderRadius.circular(15.0),

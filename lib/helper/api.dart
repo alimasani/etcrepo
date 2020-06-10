@@ -16,8 +16,7 @@ class ApiBaseHelper {
 
   String _baseUrl= HelperMethods().searchArray(baseURL, "mode", appMode)['url'];
   
-  
-  Future<dynamic> api({String method, String url, dynamic body, Map<String, dynamic> headers}) async {
+  Future<dynamic> api({String method, String url, body, Map<String, dynamic> headers}) async {
     print('Api Get, url $_baseUrl$url');
     var responseJson;
 
@@ -35,11 +34,16 @@ class ApiBaseHelper {
           Map<String, dynamic> newHeaders = {};
           newHeaders['authorization']=token;
           newHeaders['requestParams']= DataProcess().encode("base64", data);
+          Response tokenResp;
+          try{
+            tokenResp = await dio.get(_baseUrl + openWeb + authWeb + apiV1 + 'manageSessionToken', options:Options(headers:newHeaders));
+          }catch (e){
+            throw e;
+          }
           
-          Response tokenResp = await dio.get(_baseUrl + openWeb + authWeb + apiV1 + 'manageSessionToken', options:Options(headers:newHeaders));
 
           final decodedResp = json.decode(DataProcess().decode("base64", tokenResp.data['data']));
-          print(decodedResp['desc']);
+          
           await prefs.setString("authToken",decodedResp['desc']);
           headers['authorization'] = decodedResp['desc'];
 
@@ -50,12 +54,12 @@ class ApiBaseHelper {
 
     }
     headers.remove("tokenRequiresRefresh");
-
+    print(headers);
     try {
       headers['Accept']="application/json";
       var response;
       if(method=='POST'){
-         response = await dio.post(_baseUrl + url, options:Options(headers: headers));
+         response = await dio.post(_baseUrl + url, data:body, options:Options(headers: headers, method: 'POST'));
       }else{
          response = await dio.get(_baseUrl + url, options:Options(headers: headers));
       }
@@ -76,7 +80,7 @@ class ApiBaseHelper {
   switch (response.statusCode) {
     case 200:
       // var tmp = json.decode(response['data']);
-      print(response.data['data']);
+      
       var responseJson = json.decode(DataProcess().decode("base64", response.data['data']));
       return responseJson;
     case 400:

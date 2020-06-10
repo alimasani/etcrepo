@@ -15,32 +15,30 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
         length: 2,
         child: Scaffold(
-          appBar: AppBar(
-            title: Text("Login"),
-            elevation: 1.0,
-          ),
-          body: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-              onTap: (){
+            appBar: AppBar(
+              title: Text("Login"),
+              elevation: 1.0,
+              centerTitle: true,
+            ),
+            body: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
                 FocusScope.of(context).requestFocus(new FocusNode());
               },
-                      child: BlocProvider(
-              create: (context){
-                return UsersBloc(
-                  authenticateBloc:BlocProvider.of<AuthenticateBloc>(context),
-                  services:Services()
-                );
-              },
-              child: LoginForm(),
+              child: BlocProvider(
+                create: (context) {
+                  return UsersBloc(
+                      authenticateBloc:
+                          BlocProvider.of<AuthenticateBloc>(context),
+                      services: Services());
+                },
+                child: LoginForm(),
               ),
-          )
-        ));
+            )));
   }
 }
-

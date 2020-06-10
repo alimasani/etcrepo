@@ -45,7 +45,7 @@ class EtcApp extends StatelessWidget {
         title: 'ETC',
         debugShowCheckedModeBanner: (appMode=="prod")?false:true,
         theme: appTheme(),
-        initialRoute: '/',
+        initialRoute:'/',
         routes: routes,
       );
     },);

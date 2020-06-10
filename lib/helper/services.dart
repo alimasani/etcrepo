@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:etc/helper/api.dart';
 import 'package:etc/helper/data-process.dart';
 import 'package:etc/helper/globals.dart';
@@ -33,7 +34,7 @@ class Services {
 
   // Get Filters
   Future<List<dynamic>> getFilters(dynamic data) async {
-    final url = openWebCmn + 'filters';
+    final url = openWebCmn + apiV1 + 'filters';
     Map<String, String> headers = {};
     if (data != '' && data != null) {
       headers['requestParams'] = DataProcess().encode("base64", data);
@@ -44,8 +45,8 @@ class Services {
   }
   
   // Get Countries
-  Future<List<dynamic>> getCountries(dynamic data) async {
-    final url = openWebCmn + 'countries';
+  Future<dynamic> getCountries(dynamic data) async {
+    final url = openWebCmn + apiV1 + 'countries';
     Map<String, String> headers = {};
     if (data != '' && data != null) {
       headers['requestParams'] = DataProcess().encode("base64", data);
@@ -57,6 +58,18 @@ class Services {
   // Get cities
   Future<List<dynamic>> getCities(dynamic data) async {
     final url = openWeb + authWeb + apiV1 + 'cities';
+    Map<String, String> headers = {};
+    if (data != '' && data != null) {
+      headers['requestParams'] = DataProcess().encode("base64", data);
+    }
+    headers['tokenRequiresRefresh']="false";
+    final response = await ApiBaseHelper().api(method:"GET",url:url,body:null, headers:headers);
+    return response;
+  }
+  
+  // Get subscription plans
+  Future<List<dynamic>> getSubscriptionPlans(dynamic data) async {
+    final url = openWeb + authWeb + apiV1 + 'subscriptionPlans';
     Map<String, String> headers = {};
     if (data != '' && data != null) {
       headers['requestParams'] = DataProcess().encode("base64", data);
@@ -117,6 +130,7 @@ class Services {
       startOffset = "?start=" + start + "&offset=" + offset;
     }
     Map<String, String> headers = {};
+    print(data);
     if (data != '' && data != null) {
       headers['requestParams'] = DataProcess().encode("base64", data);
     }
@@ -125,7 +139,7 @@ class Services {
     }else {
       headers['tokenRequiresRefresh']="false";
     }
-    
+    print(headers);
     final response = await ApiBaseHelper().api(method:"GET",url:url+startOffset,body:null, headers:headers);
     return response;
   }
@@ -179,7 +193,7 @@ class Services {
   }
   
   // send otp
-  Future<List<dynamic>> senOTP({dynamic data}) async {
+  Future<dynamic> sendOTP({dynamic data}) async {
     /*Request Parms: {
             userIdentity,
             otpTransferMode,
@@ -198,7 +212,7 @@ class Services {
   }
   
   // validate otp
-  Future<List<dynamic>> validateOTP({dynamic data}) async {
+  Future<dynamic> validateOTP({dynamic data}) async {
     /*Request Parms: {
             userIdentity,
             oneTimePassword,
@@ -212,8 +226,13 @@ class Services {
       headers['requestParams'] = DataProcess().encode("base64", data);
     }
     headers['tokenRequiresRefresh']="false";
-    final response = await ApiBaseHelper().api(method:"POST",url:url,body:null, headers:headers);
-    return response;
+    try{
+      final response = await ApiBaseHelper().api(method:"GET",url:url,body:null, headers:headers);
+      return response;
+    }catch(e){
+      throw(e);
+    }
+    
   }
   
   // user login
@@ -309,6 +328,32 @@ class Services {
   }
   
   // get user profile
+  Future<dynamic> updatePassword(data) async {
+    /*requestParams {
+      requestContext,
+      requestType,
+      userName,
+      newPassword,
+      oldPassword,
+      oneTimePassword
+      }*/
+
+    final url = openWeb + authWeb + apiV1 + 'updatePassword';
+    
+    Map<String, String> headers = {};
+    if (data != '' && data != null) {
+      headers['requestParams'] = DataProcess().encode("base64", data);
+    }
+    headers['tokenRequiresRefresh']="false";
+    try{
+      final response = await ApiBaseHelper().api(method:"POST",url:url,body:null, headers:headers);
+      return response;
+    }catch(e){
+      throw e;
+    }
+  }
+  
+  // get notifications
   Future<dynamic> getNotifications() async {
     /*authorization: */
 
@@ -324,9 +369,102 @@ class Services {
     }
   }
   
+  // get trans history
+  Future<dynamic> getTransHistory() async {
+    /*authorization: */
 
+    final url = authWeb + apiV1 + 'redemptionHistory';
+    
+    Map<String, String> headers = {};
+    headers['tokenRequiresRefresh']="true";
+    try{
+      final response = await ApiBaseHelper().api(method:"GET",url:url,body:null, headers:headers);
+      return response;
+    }catch(e){
+      throw e;
+    }
+  }
+  
+  // get subscribed topics
+  Future<dynamic> getSubscribedTopics() async {
+    /*authorization: */
+
+    final url = authWeb + apiV1 + 'subscribedTopics';
+    
+    Map<String, String> headers = {};
+    headers['tokenRequiresRefresh']="true";
+    try{
+      final response = await ApiBaseHelper().api(method:"GET",url:url,body:null, headers:headers);
+      return response;
+    }catch(e){
+      throw e;
+    }
+  }
+  
+
+  // changeEmail/Mobile
+  Future<dynamic> changeEmailMobile({dynamic data}) async {
+    /*
+    authorization, requestParams {emailMobile,oneTimePassword}*/
+
+    final url = authWeb + apiV1 + 'updateEmailMobile';
+    
+    Map<String, String> headers = {};
+    if (data != '' && data != null) {
+      headers['requestParams'] = DataProcess().encode("base64", data);
+    }
+    headers['tokenRequiresRefresh']="true";
+    try {
+      final response = await ApiBaseHelper().api(method:"POST",url:url,body:null, headers:headers);
+      return response;
+    }catch(e){
+      throw(e);
+    }
+    
+  }
+  
+  // change fname/lname
+  Future<dynamic> updateName({dynamic data}) async {
+    /*
+    authorization, requestParams {firstName,lastName}*/
+
+    final url = authWeb + apiV1 + 'updateUser';
+    
+    Map<String, String> headers = {};
+    if (data != '' && data != null) {
+      headers['requestParams'] = DataProcess().encode("base64", data);
+    }
+    headers['tokenRequiresRefresh']="true";
+    try {
+      final response = await ApiBaseHelper().api(method:"POST",url:url,body:null, headers:headers);
+      return response;
+    }catch(e){
+      throw(e);
+    }
+    
+  }
+  
+  // upload image
+  Future<dynamic> uploadImage({FormData data}) async {
+    /*
+    authorization, Multipart Form Data (file)*/
+
+    final url = authWeb + apiV1 + 'uploadPhoto';
+    
+    Map<String, String> headers = {};
+    headers["Content-Type"]= "multipart/form-data";
+    headers['tokenRequiresRefresh']="true";
+    try {
+      final response = await ApiBaseHelper().api(method:"POST",url:url,body:data, headers:headers);
+      return response;
+    }catch(e){
+      throw(e);
+    }
+    
+  }
+  
   // register device
-  Future<List<dynamic>> registerDevice({dynamic data}) async {
+  Future<dynamic> registerDevice({dynamic data}) async {
     /*
     authorization:
     Request Parms: {
@@ -355,6 +493,25 @@ class Services {
         }*/
 
     final url =  authWeb + apiV1 + 'toggleBookmark';
+    
+    Map<String, String> headers = {};
+    if (data != '' && data != null) {
+      headers['requestParams'] = DataProcess().encode("base64", data);
+    }
+    headers['tokenRequiresRefresh']="true";
+    final response = await ApiBaseHelper().api(method:"POST",url:url,body:null, headers:headers);
+    return response;
+  }
+  
+  // toggle Topics
+  Future<dynamic> toggleTopic(dynamic data) async {
+    /*
+    authorization:
+    Request Parms: {
+            topicID
+        }*/
+
+    final url =  authWeb + apiV1 + 'toggleTopicSubscription';
     
     Map<String, String> headers = {};
     if (data != '' && data != null) {
@@ -432,14 +589,14 @@ class Services {
   }
   
   // validate user
-  Future<List<dynamic>> validateUser({dynamic data}) async {
+  Future<dynamic> validateUser({dynamic data}) async {
     /*
     authorization:
     Request Parms: {
             userPassword,
         }*/
 
-    final url = openWeb + authWeb + apiV1 + 'validateUser';
+    final url = authWeb + apiV1 + 'validateUser';
     
     Map<String, String> headers = {};
     if (data != '' && data != null) {
@@ -448,6 +605,24 @@ class Services {
     headers['tokenRequiresRefresh']="true";
     final response = await ApiBaseHelper().api(method:"GET",url:url,body:null, headers:headers);
     return response;
+  }
+  
+  // is first time login?
+  Future<dynamic> isFirstTimeLogin({String username}) async {
+    /*
+    authorization:*/
+
+    final url = openWeb + authWeb + apiV1 + 'isFirstLoginAttempt';
+    
+    Map<String, String> headers = {};
+    headers['authorization'] = DataProcess().encode("base64","NONE:"+username+":NONE:NONE:NONE");;
+    headers['tokenRequiresRefresh']="false";
+    try {
+      final response = await ApiBaseHelper().api(method:"GET",url:url,body:null, headers:headers);
+      return response;
+    }catch (e){
+      throw e;
+    }    
   }
   
   Future<void> saveLocalStorage({String key, String auth}) async{

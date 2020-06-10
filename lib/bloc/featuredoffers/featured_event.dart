@@ -11,3 +11,12 @@ class GetFeaturedOffers extends FeaturedOffersEvent {
   @override
   List<Object> get props => [userProfile];
 }
+
+class ChangeFeaturedOfferDetail extends FeaturedOffersEvent {
+  final List<dynamic> offerList;
+
+  const ChangeFeaturedOfferDetail(this.offerList);
+
+  @override
+  List<String> get props => [];
+}

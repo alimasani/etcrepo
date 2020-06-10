@@ -36,3 +36,13 @@ class OffersError extends OffersState {
   @override
   List<Object> get props => [message];
 }
+
+
+class OfferChanged extends OffersState {
+  final String offerId;
+  
+  const OfferChanged(this.offerId);
+
+  @override
+  List<String> get props => [this.offerId];
+}

@@ -24,12 +24,22 @@ class OfferdetailsBloc extends Bloc<OfferdetailsEvent, OfferdetailsState> {
         reqParams['outletID'] = event.outletId;
         reqParams['offerID'] = event.offerId;
 
-        Position position = await Geolocator().getCurrentPosition();
-        print(position);
-        var userloc = {};
-        userloc['latitude'] = position.latitude.toString();
-        userloc['longitude'] = position.longitude.toString();
-        reqParams['userLocation']=userloc;
+        var position = null;
+
+        var permission = await Geolocator().isLocationServiceEnabled();
+        print(permission);
+        if(permission == false){
+          position = null;
+        }else {
+          position = await Geolocator().getCurrentPosition();
+        }
+        if(position!=null){
+          var userloc = {};
+          userloc['latitude'] = position.latitude.toString();
+          userloc['longitude'] = position.longitude.toString();
+          reqParams['userLocation']=userloc;
+        }
+        
 
         print("XXXXXXX");
         print(event.userProfile);

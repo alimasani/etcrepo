@@ -31,6 +31,11 @@ class _MerchantPinState extends State<MerchantPin> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void _updatePin(key,context) async {
     
     if(key!="-"){
@@ -106,7 +111,7 @@ class _MerchantPinState extends State<MerchantPin> {
         this.digit3="";
         this.digit4="";
         _showLoader = false;
-        Scaffold.of(context).showSnackBar(SnackBar(content: Text("Invalid Merchant PIN", textAlign: TextAlign.center,), backgroundColor: Colors.red,));
+        Scaffold.of(context).showSnackBar(SnackBar(behavior:SnackBarBehavior.floating,content: Text("Invalid Merchant PIN", textAlign: TextAlign.center,), backgroundColor: Colors.red,));
         setState(() {});
       }
 
@@ -127,6 +132,7 @@ class _MerchantPinState extends State<MerchantPin> {
         appBar:AppBar(
           title: Text("Merchant Pin"),
           elevation: 0.0,
+          centerTitle: true,
         ),
         body:BlocBuilder<AuthenticateBloc, AuthenticateState>(
         builder: (context, state) {
@@ -137,7 +143,7 @@ class _MerchantPinState extends State<MerchantPin> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       Container(
-                        padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 30.0),
+                        padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 10.0),
                         child: IDCard(profile:profile),
                         color: primaryColor,
                       ),

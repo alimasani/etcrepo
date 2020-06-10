@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:etc/bloc/bloc.dart';
 import 'package:etc/helper/globals.dart';
 import 'package:etc/helper/services.dart';
@@ -20,20 +19,45 @@ class OffersBloc extends Bloc<OffersEvent, OffersState> {
   Stream<OffersState> mapEventToState(
     OffersEvent event,
   ) async* {
-    yield OffersLoading();
+
+    final currentState = state;
+
+    // yield OffersLoading();
     if(event is GetOffers){
         var reqParams = event.data??{};
         print("getting current location");
-        Position position = await Geolocator().getCurrentPosition();
-        print(position);
-        var userloc = {};
-        userloc['latitude'] = position.latitude.toString();
-        userloc['longitude'] = position.longitude.toString();
-        reqParams['userLocation']=userloc;
-        print(reqParams);
+        var position = null;
+
+        var permission = await Geolocator().isLocationServiceEnabled();
+        print(permission);
+        if(permission == false){
+          position = null;
+        }else {
+          position = await Geolocator().getCurrentPosition();
+        }
+        if(position!=null){
+          var userloc = {};
+          userloc['latitude'] = position.latitude.toString();
+          userloc['longitude'] = position.longitude.toString();
+          reqParams['userLocation']=userloc;
+        }
+        
         try{
-          final offersList = await _services.getOffers(data:reqParams,start:"1",offset:rowsPerPage);
-          yield OffersSuccess(offersList);
+          int startPage = 0;
+          if(event.resetList == true){
+            startPage = 1;
+            final offersList = await _services.getOffers(data:reqParams,start:startPage.toString(),offset:rowsPerPage);
+            yield OffersSuccess(offersList);
+          }else {
+            var oList = [];
+            if(currentState is OffersSuccess){
+              oList = currentState.offers;
+            }
+            startPage = (oList.length/int.parse(rowsPerPage)).round();
+            startPage = startPage + 1;
+            final offersList = await _services.getOffers(data:reqParams,start:startPage.toString(),offset:rowsPerPage);
+            yield OffersSuccess(oList + offersList);
+          }
         }catch(e){
           yield OffersError(e.toString());
         }
@@ -43,6 +67,9 @@ class OffersBloc extends Bloc<OffersEvent, OffersState> {
         reqParam['viewFeaturedOffers']="false";
         final offersList = await _services.getOffers(data:reqParam,start:"1",offset:"3");
         yield OffersSuccess(offersList);
+    } else if (event is ChangeOfferDetail) {
+      var offerList = event.offerList;
+      yield OffersSuccess(offerList);
     }
   }
 }

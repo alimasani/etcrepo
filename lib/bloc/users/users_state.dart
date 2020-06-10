@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:etc/models/models.dart';
 
 abstract class UsersState extends Equatable {
   const UsersState();

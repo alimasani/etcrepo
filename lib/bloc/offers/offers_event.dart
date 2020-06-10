@@ -5,8 +5,9 @@ abstract class OffersEvent extends Equatable {
 }
 
 class GetOffers extends OffersEvent {
-  final dynamic data;  
-  const GetOffers({this.data});
+  final dynamic data;
+  final bool resetList;  
+  const GetOffers({this.data,this.resetList});
 
   @override
   List<Object> get props => [];
@@ -26,4 +27,13 @@ class FilterOffers extends OffersEvent {
 
   @override
   List<Object> get props => [];
+}
+
+class ChangeOfferDetail extends OffersEvent {
+  final List<dynamic> offerList;
+
+  const ChangeOfferDetail(this.offerList);
+
+  @override
+  List<String> get props => [];
 }

@@ -6,10 +6,12 @@ import 'package:etc/components/loader.dart';
 import 'package:etc/components/notauthorized.dart';
 import 'package:etc/helper/globals.dart';
 import 'package:etc/helper/methods.dart';
+import 'package:etc/models/app_tab.dart';
 import 'package:etc/theme/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:getflutter/getflutter.dart';
+import 'package:share/share.dart';
 
 
 class Profile extends StatefulWidget {
@@ -40,7 +42,7 @@ class _ProfileState extends State<Profile> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       Container(
-                        padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 30.0),
+                        padding: EdgeInsets.fromLTRB(20.0, 00.0, 20.0, 20.0),
                         child: IDCard(profile:profile),
                         color: primaryColor,
                       ),
@@ -59,14 +61,14 @@ class _ProfileState extends State<Profile> {
                                     Text(
                                       "Redemptions",
                                       style: TextStyle(
-                                          fontSize: 12.0,
+                                          fontSize: 14.0,
                                           color: grayColor,
                                           height: 1.2),
                                     ),
                                     Text(
                                       profile['redemptionCount'],
                                       style: TextStyle(
-                                          fontSize: 16.0,
+                                          fontSize: 18.0,
                                           fontWeight: FontWeight.w600,
                                           color: blueColor,
                                           height: 1.5),
@@ -82,14 +84,14 @@ class _ProfileState extends State<Profile> {
                                     Text(
                                       "Avg. Savings",
                                       style: TextStyle(
-                                          fontSize: 12.0,
+                                          fontSize: 14.0,
                                           color: grayColor,
                                           height: 1.2),
                                     ),
                                     Text(
                                       profile['userSavings'],
                                       style: TextStyle(
-                                          fontSize: 16.0,
+                                          fontSize: 18.0,
                                           fontWeight: FontWeight.w600,
                                           color: blueColor,
                                           height: 1.5),
@@ -120,7 +122,7 @@ class _ProfileState extends State<Profile> {
                                     profile['subscription']['subscriptionPlan']
                                         ['subscriptionPlanName'],
                                     style: TextStyle(
-                                        fontSize: 16.0,
+                                        fontSize: 14.0,
                                         fontWeight: FontWeight.w600,
                                         color: blueColor,
                                         height: 1.5))
@@ -137,7 +139,7 @@ class _ProfileState extends State<Profile> {
                                 Text(
                                     subscribedFrom,
                                     style: TextStyle(
-                                        fontSize: 16.0,
+                                        fontSize: 14.0,
                                         fontWeight: FontWeight.w600,
                                         color: blueColor,
                                         height: 1.5))
@@ -154,7 +156,7 @@ class _ProfileState extends State<Profile> {
                                 Text(
                                     expiresOn,
                                     style: TextStyle(
-                                        fontSize: 16.0,
+                                        fontSize: 14.0,
                                         fontWeight: FontWeight.w600,
                                         color: blueColor,
                                         height: 1.5))
@@ -172,7 +174,7 @@ class _ProfileState extends State<Profile> {
                                     profile['subscription']
                                         ['subscriptionStatus'],
                                     style: TextStyle(
-                                        fontSize: 16.0,
+                                        fontSize: 14.0,
                                         fontWeight: FontWeight.w600,
                                         color: blueColor,
                                         height: 1.5))
@@ -187,75 +189,70 @@ class _ProfileState extends State<Profile> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
+                            
                             Container(
-                                width: MediaQuery.of(context).size.width * 0.27,
+                                width: MediaQuery.of(context).size.width * 0.29,
                                 padding:
-                                    EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 30.0),
+                                    EdgeInsets.fromLTRB(5.0, 30.0, 5.0, 30.0),
                                 color: Colors.white,
-                                child: Column(children: <Widget>[
-                                  Stack(
-                                    children: <Widget>[
-                                    
-                                  Center(
-                                    child: Icon(
-                                      Icons.notifications,
+                                child: InkWell(
+                                  onTap: (){
+                                    Navigator.of(context).pushNamed('/transactions');
+                                  },
+                                                                  child: Column(children: <Widget>[
+                                    Icon(
+                                      Icons.account_balance_wallet,
                                       color: blueColor,
                                       size: 38.0,
                                     ),
-                                  ),
-                                    (int.parse(profile['unreadNotificationCount'])>0)?Align(
-                                    child: Container(
-                                      child: Center(child: Text(profile['unreadNotificationCount'], style: TextStyle(color:Colors.white, fontWeight:FontWeight.w600), textAlign: TextAlign.center,)),
-                                      
-                                      width:20.0,
-                                      height:20.0,
-                                      alignment: Alignment.topCenter,
-                                      decoration: BoxDecoration(
-                                        shape:BoxShape.circle,
-                                        color:Colors.red,
-                                      ),
+                                    SizedBox(
+                                      height: 5.0,
                                     ),
-                                    alignment: Alignment(0.3,1),
-                                  ):Container(child:null),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 5.0,
-                                  ),
-                                  Text("Notifications")
-                                ])),
+                                    Text("Transactions")
+                                  ]),
+                                )),
                             Container(
-                                width: MediaQuery.of(context).size.width * 0.27,
+                                width: MediaQuery.of(context).size.width * 0.29,
                                 padding:
-                                    EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 30.0),
+                                    EdgeInsets.fromLTRB(5.0, 30.0, 5.0, 30.0),
                                 color: Colors.white,
-                                child: Column(children: <Widget>[
-                                  Icon(
-                                    Icons.account_balance_wallet,
-                                    color: blueColor,
-                                    size: 38.0,
-                                  ),
-                                  SizedBox(
-                                    height: 5.0,
-                                  ),
-                                  Text("Transactions")
-                                ])),
+                                child: InkWell(
+                                  onTap: (){
+                                      Share.share("Hey, you can get 50% off the best the UAE has to offer with the Expats Teachers Club app. Download the app here <br/>Android: https://bit.ly/2XBYS9P<br/>IOS: https://apple.co/3gk1qBM"); 
+                                  },
+                                                                  child: Column(children: <Widget>[
+                                    Icon(
+                                      Icons.people,
+                                      color: blueColor,
+                                      size: 38.0,
+                                    ),
+                                    SizedBox(
+                                      height: 5.0,
+                                    ),
+                                    Text("Refer A Friend")
+                                  ]),
+                                )),
                             Container(
-                                width: MediaQuery.of(context).size.width * 0.27,
+                                width: MediaQuery.of(context).size.width * 0.29,
                                 padding:
-                                    EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 30.0),
+                                    EdgeInsets.fromLTRB(5.0, 30.0, 5.0, 30.0),
                                 color: Colors.white,
-                                child: Column(children: <Widget>[
-                                  Icon(
-                                    Icons.sentiment_very_satisfied,
-                                    color: blueColor,
-                                    size: 38.0,
-                                  ),
-                                  SizedBox(
-                                    height: 5.0,
-                                  ),
-                                  Text("Personal Info")
-                                ]))
+                                child: InkWell(
+                                  onTap: (){
+                                    Navigator.of(context).pushNamed("/personalInfo");
+                                  },
+                                                                  child: Column(children: <Widget>[
+                                    Icon(
+                                      Icons.sentiment_very_satisfied,
+                                      color: blueColor,
+                                      size: 38.0,
+                                    ),
+                                    SizedBox(
+                                      height: 5.0,
+                                    ),
+                                    Text("Personal Info")
+                                  ]),
+                                ))
                           ],
                         ),
                       )
@@ -267,3 +264,49 @@ class _ProfileState extends State<Profile> {
     });
   }
 }
+
+
+/// Notifications Button
+// Container(
+//                                 width: MediaQuery.of(context).size.width * 0.27,
+//                                 padding:
+//                                     EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 30.0),
+//                                 color: Colors.white,
+//                                 child: InkWell(
+//                                   onTap: (){
+//                                     BlocProvider.of<FooterBloc>(context)
+//                                     .add(TabUpdated(AppTab.notifications));
+//                                   },
+//                                                                   child: Column(children: <Widget>[
+//                                     Stack(
+//                                       children: <Widget>[
+                                      
+//                                     Center(
+//                                       child: Icon(
+//                                         Icons.notifications,
+//                                         color: blueColor,
+//                                         size: 38.0,
+//                                       ),
+//                                     ),
+//                                       (int.parse(profile['unreadNotificationCount'])>0)?Align(
+//                                       child: Container(
+//                                         child: Center(child: Text(profile['unreadNotificationCount'], style: TextStyle(color:Colors.white, fontWeight:FontWeight.w600), textAlign: TextAlign.center,)),
+                                        
+//                                         width:20.0,
+//                                         height:20.0,
+//                                         alignment: Alignment.topCenter,
+//                                         decoration: BoxDecoration(
+//                                           shape:BoxShape.circle,
+//                                           color:Colors.red,
+//                                         ),
+//                                       ),
+//                                       alignment: Alignment(0.3,1),
+//                                     ):Container(child:null),
+//                                       ],
+//                                     ),
+//                                     SizedBox(
+//                                       height: 5.0,
+//                                     ),
+//                                     Text("Notifications")
+//                                   ]),
+//                                 )),

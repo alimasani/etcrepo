@@ -24,10 +24,18 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>To list deals around you.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To select profile image</string>
+	<key>NSCameraUsageDescription</key>
+	<string>To select profile image</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>itms</string>
+	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -43,5 +51,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
 </dict>
 </plist>

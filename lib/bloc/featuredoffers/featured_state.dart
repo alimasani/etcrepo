@@ -29,3 +29,12 @@ class FeaturedOffersError extends FeaturedOffersState {
   @override
   List<Object> get props => [message];
 }
+
+class FeaturedOfferChanged extends FeaturedOffersState {
+  final String offerId;
+  
+  const FeaturedOfferChanged(this.offerId);
+
+  @override
+  List<String> get props => [this.offerId];
+}

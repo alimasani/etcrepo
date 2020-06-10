@@ -19,15 +19,15 @@ class _VoucherCodeState extends State<VoucherCode> {
   dynamic voucher;
 
   _gotoOfferDetails(ctx){
-
-    Navigator.of(ctx).pushReplacement(MaterialPageRoute(
-                                    builder: (_) => BlocProvider(
-                                      create: (context) =>
-                                          OfferdetailsBloc(Services()),
-                                      child: OfferDetails(offerId: voucher['offerID'],outletId: voucher['outletID'],outletName: voucher['outletName']),
-                                    ),
-                                    //(_)=>OfferDetails(oItem: itm,)
-                                  ));
+    Navigator.of(context).pop();
+    // Navigator.of(ctx).pushReplacement(MaterialPageRoute(
+    //                                 builder: (_) => BlocProvider(
+    //                                   create: (context) =>
+    //                                       OfferdetailsBloc(Services()),
+    //                                   child: OfferDetails(offerId: voucher['offerID'],outletId: voucher['outletID'],outletName: voucher['outletName']),
+    //                                 ),
+    //                                 //(_)=>OfferDetails(oItem: itm,)
+    //                               ));                              
 
   }
 
@@ -38,7 +38,7 @@ class _VoucherCodeState extends State<VoucherCode> {
     voucher = params['voucher'];
 
     return Scaffold(
-        appBar: AppBar(title: Text("Voucher Redeemption"), elevation: 0.0),
+        appBar: AppBar(title: Text("Voucher Redeemption"), elevation: 0.0, centerTitle: true,),
         body: Builder(builder: (BuildContext context){
           return Container(
           child: Column(
@@ -80,7 +80,7 @@ class _VoucherCodeState extends State<VoucherCode> {
                       InkWell(
                         onTap: (){
                           Clipboard.setData(ClipboardData(text:vcode));
-                          Scaffold.of(context).showSnackBar(SnackBar(content: Text("Voucher code copied to clipboard.", textAlign: TextAlign.center,),));
+                          Scaffold.of(context).showSnackBar(SnackBar(behavior:SnackBarBehavior.floating,content: Text("Voucher code copied to clipboard.", textAlign: TextAlign.center,),));
                         },
                                               child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -89,7 +89,7 @@ class _VoucherCodeState extends State<VoucherCode> {
                           Text("  Copy Code", style: TextStyle(color: Colors.black26, fontSize: 16.0),)
                         ],),
                       ),
-                      SizedBox(height: 30.0,),
+                      SizedBox(height: 14.0,),
                       Text("Please show this code to merchant to complete your redeemption.", style:TextStyle(color: grayColor, fontSize:15.0, height: 1.2), textAlign: TextAlign.center,),
                     ]
                   ),
@@ -117,7 +117,7 @@ class _VoucherCodeState extends State<VoucherCode> {
                                 height: 1.2,
                                 fontWeight: FontWeight.w600),
                           )),
-                      color: blueColor,
+                      color: primaryColor,
                     ),)
             ],
           ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:etc/helper/globals.dart';
 import 'package:etc/models/models.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ class CategoryItem extends StatelessWidget {
       child: Card(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
           elevation: 0.0,
-          margin: EdgeInsets.all(1.0),
+          margin: EdgeInsets.all(0.0),
           color: Colors.white,
           child: Padding(
             padding:EdgeInsets.fromLTRB(0.0,0.0,0.0,0.0),
@@ -21,7 +22,7 @@ class CategoryItem extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Image.network(catItem['categoryImageURL'], width: 37.0),
+                    CachedNetworkImage(imageUrl:catItem['categoryImageURL'], width: 37.0),
                     SizedBox(
                       height: 10.0,
                     ),

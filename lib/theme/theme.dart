@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 ThemeData appTheme() {
   return ThemeData(
     primaryColor: primaryColor,
-    accentColor: blueColor,
+    accentColor: darkGrayColor, //blueColor
     hintColor: Colors.white,
     dividerColor: lightGrayColor,
-    buttonColor: blueColor,
+    buttonColor: darkGrayColor, //blueColor
     scaffoldBackgroundColor: Colors.white,
     canvasColor: Colors.white,
     dialogBackgroundColor:Colors.black87,
